@@ -19,10 +19,24 @@ const DraggableResizableContainer = ({
   const containerRef = useRef(null);
   const [position, setPosition] = useState(defaultPosition);
   const [isDragging, setIsDragging] = useState(false);
-  const [size, setSize] = useState(defaultSize); 
+  const [size, setSize] = useState(defaultSize);
+
+  // 網格大小設定
+  const GRID_SIZE = 20;
+
+  // 對齊到網格的輔助函數
+  const snapToGrid = (value) => {
+    return Math.round(value / GRID_SIZE) * GRID_SIZE;
+  };
 
   const handleDrag = (_e, data) => {
-    setPosition({ x: data.x, y: data.y });
+    // 將座標對齊到網格
+    const snappedX = snapToGrid(data.x);
+    const snappedY = snapToGrid(data.y);
+
+    setPosition({ x: snappedX, y: snappedY });
+
+    // 檢查是否在垃圾桶上方
     const draggableElement = containerRef.current;
     const trashBox = document.querySelector('.trash-box');
     if (draggableElement && trashBox) {
@@ -38,8 +52,12 @@ const DraggableResizableContainer = ({
     }
   };
 
+  // 調整大小時也對齊網格
   const onResize = (_event, { size }) => {
-    setSize({ width: size.width, height: size.height });
+    setSize({
+      width: snapToGrid(size.width),
+      height: snapToGrid(size.height)
+    });
   };
 
   const handleDragStart = () => {
@@ -76,19 +94,21 @@ const DraggableResizableContainer = ({
       onDrag={handleDrag}
       onStop={handleDragStop}
       handle=".drag-handle"
+      grid={[GRID_SIZE, GRID_SIZE]} // 添加網格對齊
     >
-      <div 
-        ref={containerRef} 
+      <div
+        ref={containerRef}
         className={`absolute ${isDragging ? 'opacity-80' : ''} transition-opacity duration-200`}
       >
         <ResizableBox
-          width={defaultSize.width}
-          height={defaultSize.height}
+          width={size.width}
+          height={size.height}
           minConstraints={minConstraints}
           maxConstraints={maxConstraints}
           className="relative"
           resizeHandles={['se']}
-          onResize={onResize} 
+          onResize={onResize}
+          grid={[GRID_SIZE, GRID_SIZE]} // 調整大小時也使用網格
           handle={(h, ref) => (
             <div
               ref={ref}
@@ -102,21 +122,15 @@ const DraggableResizableContainer = ({
           )}
         >
           <div className="w-full h-full bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* 拖曳把手 */}
             <div className="drag-handle h-6 w-full bg-gray-100 hover:bg-gray-200 cursor-move flex items-center justify-center border-b border-gray-200 transition-colors duration-200">
-              {/* 拖曳指示器 */}
               <div className="flex gap-1">
                 <div className="w-1 h-1 rounded-full bg-gray-400"></div>
                 <div className="w-1 h-1 rounded-full bg-gray-400"></div>
                 <div className="w-1 h-1 rounded-full bg-gray-400"></div>
               </div>
             </div>
-            
-            {/* 圖表容器 */}
             <div className="p-4 relative" style={{ height: size.height - 24 }}>
-            
               {renderChart()}
-           
             </div>
           </div>
         </ResizableBox>
