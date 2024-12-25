@@ -8,11 +8,11 @@ export default function SelectDataDialog({ isOpen, onClose, onConfirm }) {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
                         <div className="p-6">
-                            <h2 className="text-2xl font-bold mb-4">自定義表單</h2>
+                            <h2 className="text-2xl font-bold mb-4">選擇資料來源</h2>
                             <form className="space-y-4">
                                 <div>
                                     <label htmlFor="select1" className="block text-sm font-medium text-gray-700 mb-1">
-                                        選擇 1
+                                        台電單位
                                     </label>
                                     <select
                                         id="select1"
@@ -25,7 +25,7 @@ export default function SelectDataDialog({ isOpen, onClose, onConfirm }) {
                                 </div>
                                 <div>
                                     <label htmlFor="select2" className="block text-sm font-medium text-gray-700 mb-1">
-                                        選擇 2
+                                        轉直供
                                     </label>
                                     <select
                                         id="select2"

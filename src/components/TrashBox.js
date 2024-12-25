@@ -3,7 +3,6 @@ import React from 'react';
 const TrashBox = ({
   isOverTrash
 }) => {
-  // console.log(isOverTrash)
   return (
     <div className="absolute bottom-4 right-4 w-16 h-16 trash-box">
       <div className={`w-full h-full rounded-lg flex items-center justify-center ${isOverTrash ? 'bg-red-500' : 'bg-gray-200'}`}>
