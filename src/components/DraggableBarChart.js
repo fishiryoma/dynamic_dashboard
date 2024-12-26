@@ -1,28 +1,38 @@
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from "react";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
 
 const data = [
-  { name: '一月', value: 400 },
-  { name: '二月', value: 300 },
-  { name: '三月', value: 600 },
-  { name: '四月', value: 800 },
-  { name: '五月', value: 500 },
-  { name: '六月', value: 700 },
+    { name: "Page A", uv: 4000, pv: 2400 },
+    { name: "Page B", uv: 3000, pv: 1398 },
+    { name: "Page C", uv: 2000, pv: 9800 },
+    { name: "Page D", uv: 2780, pv: 3908 },
+    { name: "Page E", uv: 1890, pv: 4800 },
+    { name: "Page F", uv: 2390, pv: 3800 },
+    { name: "Page G", uv: 3490, pv: 4300 },
 ];
 
 const DraggableBarChart = () => {
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="value" fill="#8884d8" />
-      </BarChart>
-    </ResponsiveContainer>
-  );
+    return (
+        <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="uv" fill="#8884d8" />
+                <Bar dataKey="pv" fill="#82ca9d" />
+            </BarChart>
+        </ResponsiveContainer>
+    );
 };
 
 export default DraggableBarChart;

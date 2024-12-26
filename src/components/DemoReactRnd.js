@@ -1,88 +1,108 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Rnd } from "react-rnd";
 import DraggablePieChart from "./DraggablePieChart";
+import DraggableLineChart from "./DraggableLineChart";
+import DraggableBarChart from "./DraggableBarChart";
 
 const MyRndComponent = ({
-  parentRef,
-  trashRef,
-  isOverTrash,
-  setIsOverTrash,
+    chart,
+    position,
+    size,
+    isDragging,
+    onDragStart,
+    onDragEnd,
+    onPositionChange,
+    onSizeChange,
+    parentRef,
+    trashRef,
+    isOverTrash,
+    setIsOverTrash,
+    title = "這是標題",
 }) => {
-  const [dimensions, setDimensions] = useState({
-    width: 320,
-    height: 200,
-  });
+    // 局部方法：處理與垃圾桶的碰撞檢測
+    const checkTrashCollision = (x, y, width, height) => {
+        if (trashRef.current && parentRef.current) {
+            const parentRect = parentRef.current.getBoundingClientRect();
+            const trashRect = trashRef.current.getBoundingClientRect();
+            const draggableRect = {
+                x: parentRect.left + x,
+                y: parentRect.top + y,
+                width,
+                height,
+            };
 
-  const isOverlappingWithTrash = (draggableRect) => {
-    const trashRect = trashRef.current.getBoundingClientRect();
-    const isOverlapping =
-      draggableRect.x + draggableRect.width > trashRect.left &&
-      draggableRect.y + draggableRect.height > trashRect.top;
-    setIsOverTrash(isOverlapping);
-  };
+            const isOverlapping =
+                draggableRect.x + draggableRect.width > trashRect.left &&
+                draggableRect.y + draggableRect.height > trashRect.top;
 
-  const handleDrag = (_e, d) => {
-    if (trashRef.current && parentRef.current) {
-      const parentRect = parentRef.current.getBoundingClientRect();
-      const draggableRect = {
-        x: parentRect.left + d.x,
-        y: parentRect.top + d.y,
-        width: dimensions.width,
-        height: dimensions.height,
-      };
+            setIsOverTrash(isOverlapping);
+        }
+    };
 
-      isOverlappingWithTrash(draggableRect);
-    }
-  };
+    // 局部方法：處理拖動邏輯
+    const handleDrag = (_e, d) => {
+        onPositionChange({ x: d.x, y: d.y });
+        checkTrashCollision(d.x, d.y, size.width, size.height);
+    };
 
-  const handleResize = (_e, _direction, ref, _delta, position) => {
-    setDimensions({
-      width: ref.offsetWidth,
-      height: ref.offsetHeight,
-    });
-    if (trashRef.current && parentRef.current) {
-      const parentRect = parentRef.current.getBoundingClientRect();
-      const draggableRect = {
-        x: parentRect.left + position.x,
-        y: parentRect.top + position.y,
-        width: ref.offsetWidth,
-        height: ref.offsetHeight,
-      };
-      isOverlappingWithTrash(draggableRect);
-    }
-  };
+    // 局部方法：處理大小調整邏輯
+    const handleResize = (_e, _direction, ref, _delta, position) => {
+        const newSize = {
+            width: ref.offsetWidth,
+            height: ref.offsetHeight,
+        };
+        checkTrashCollision(
+            position.x,
+            position.y,
+            newSize.width,
+            newSize.height
+        );
+        onSizeChange(newSize, { x: position.x, y: position.y });
+    };
 
-  const handleDragStop = () => {
-    if (isOverTrash) {
-      console.log("TRASH");
-      //   setIsConfirmOpen(true);
-    }
-    setIsOverTrash(false);
-  };
+    // 局部方法：渲染對應的圖表組件
+    const renderChart = () => {
+        switch (chart.type) {
+            case "pie":
+                return <DraggablePieChart />;
+            case "line":
+                return <DraggableLineChart />;
+            case "bar":
+                return <DraggableBarChart />;
+            default:
+                return null;
+        }
+    };
 
-  return (
-    <Rnd
-      default={{
-        x: 10,
-        y: 10,
-        width: dimensions.width,
-        height: dimensions.height,
-      }}
-      minWidth={200}
-      minHeight={200}
-      bounds="parent"
-      dragGrid={[20, 20]}
-      className={`bg-white rounded-lg shadow-lg overflow-hidden cursor-move ${
-        isOverTrash && "opacity-50"
-      }`}
-      onDrag={handleDrag}
-      onDragStop={handleDragStop}
-      onResize={handleResize}
-      resizeGrid={[20, 20]}
-    >
-      <DraggablePieChart />
-    </Rnd>
-  );
+    return (
+        <Rnd
+            position={position}
+            size={size}
+            minWidth={200}
+            minHeight={200}
+            bounds="parent"
+            dragGrid={[10, 10]}
+            className={`bg-white rounded-lg shadow-lg overflow-hidden cursor-move ${
+                isOverTrash && isDragging ? "opacity-50" : ""
+            }`}
+            onDragStart={(_e, d) => onDragStart({ x: d.x, y: d.y })}
+            onDrag={handleDrag}
+            onDragStop={onDragEnd}
+            onResize={handleResize}
+            resizeGrid={[10, 10]}
+        >
+            {title && (
+                <div className="bg-gray-50 border-b border-gray-200 px-4 py-2">
+                    <h3 className="text-sm font-medium text-gray-700 truncate">
+                        {title}
+                    </h3>
+                </div>
+            )}
+            <div style={{ height: `${size.height - 32}px` }}>
+                {renderChart()}
+            </div>
+        </Rnd>
+    );
 };
 
 export default MyRndComponent;
