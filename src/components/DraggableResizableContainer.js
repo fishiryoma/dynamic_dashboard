@@ -91,7 +91,7 @@ const DraggableResizableContainer = ({
       setIsOverTrash(isOverlapping);
     }
   };
-  console.log("size", size);
+
   const onResize = (_event, { size: newSize, handle }) => {
     const parentRect = boundRef.current.getBoundingClientRect();
 
