@@ -161,6 +161,7 @@ function App() {
             <div className="flex h-[80vh] gap-4">
                 <Sidebar setSelectDataOpen={setSelectDataOpen} />
                 <div
+                    id="white-borad"
                     ref={parentRef}
                     className="flex-1 bg-white rounded-lg shadow-lg relative"
                     style={{
@@ -186,6 +187,7 @@ function App() {
                             handleAddChart(selectDataOpen.type);
                             setSelectDataOpen(false);
                         }}
+                        // data-testid="select-dialog"
                     />
                 </div>
             </div>

@@ -27,7 +27,10 @@ const ChartButton = ({ onClick, svgPaths, label }) => (
 
 function Sidebar({ setSelectDataOpen }) {
     return (
-        <div className="w-[200px] bg-white rounded-lg shadow-lg p-6 flex flex-col gap-6 border border-gray-200">
+        <div
+            id="sidebar"
+            className="w-[200px] bg-white rounded-lg shadow-lg p-6 flex flex-col gap-6 border border-gray-200"
+        >
             <h2 className="text-lg font-semibold text-gray-700 text-center">
                 選擇新增圖表類型
             </h2>

@@ -209,8 +209,11 @@ export default function SelectDataDialog({ isOpen, onClose, onConfirm }) {
     return (
         <div>
             {isOpen.open && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-20">
+                    <div
+                        data-testid="select-dialog"
+                        className="bg-white rounded-lg shadow-xl max-w-md w-full"
+                    >
                         <div className="p-6">
                             <h2 className="text-2xl font-bold mb-4">
                                 選擇資料來源

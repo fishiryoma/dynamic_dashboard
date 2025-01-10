@@ -76,13 +76,14 @@ const MyRndComponent = ({
 
     return (
         <Rnd
+            data-testid={chart.type}
             position={position}
             size={size}
             minWidth={200}
             minHeight={200}
             bounds="parent"
             dragGrid={[10, 10]}
-            className={`bg-white rounded-lg shadow-lg overflow-hidden cursor-move ${
+            className={`bg-white z-10 rounded-lg shadow-lg overflow-hidden cursor-move ${
                 isOverTrash && isDragging ? "opacity-50" : ""
             }`}
             onDragStart={(_e, d) => onDragStart({ x: d.x, y: d.y })}
