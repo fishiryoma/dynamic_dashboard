@@ -2,11 +2,11 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import debounce from "lodash/debounce";
 import TrashBox from "./components/TrashBox";
 import Sidebar from "./components/Sidebar";
-import ConfirmDialog from "./components/ConfirmDialog";
-import SelectDataDialog from "./components/SelectDataDialog";
-import DraggableResizableContainer from "./components/DraggableResizableContainer";
+import ConfirmDialog from "./components/modals/ConfirmDialog";
+import SelectDataDialog from "./components/modals/SelectDataDialog";
+// import DraggableResizableContainer from "./components/DraggableResizableContainer";
 import "./index.css";
-import MyRndComponent from "./components/DemoReactRnd";
+import MyRndComponent from "./components/containers/DemoReactRnd";
 
 function App() {
     // 從 localStorage 讀取儲存的資料

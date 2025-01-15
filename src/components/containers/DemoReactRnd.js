@@ -1,8 +1,10 @@
 import React from "react";
 import { Rnd } from "react-rnd";
-import DraggablePieChart from "./DraggablePieChart";
-import DraggableLineChart from "./DraggableLineChart";
-import DraggableBarChart from "./DraggableBarChart";
+import PieChart from "../charts/PieChart";
+import LineChart from "../charts/LineChart";
+import BarChart from "../charts/BarChart";
+import AreaChart from "../charts/AreaChart";
+import ScatterChart from "../charts/ScatterChart";
 
 const MyRndComponent = ({
     chart,
@@ -17,7 +19,7 @@ const MyRndComponent = ({
     trashRef,
     isOverTrash,
     setIsOverTrash,
-    title = "這是標題",
+    title = "自定義標題",
 }) => {
     // 局部方法：處理與垃圾桶的碰撞檢測
     const checkTrashCollision = (x, y, width, height) => {
@@ -64,11 +66,15 @@ const MyRndComponent = ({
     const renderChart = () => {
         switch (chart.type) {
             case "pie":
-                return <DraggablePieChart />;
+                return <PieChart />;
             case "line":
-                return <DraggableLineChart />;
+                return <LineChart />;
             case "bar":
-                return <DraggableBarChart />;
+                return <BarChart />;
+            case "area":
+                return <AreaChart />;
+            case "scatter":
+                return <ScatterChart />;
             default:
                 return null;
         }
